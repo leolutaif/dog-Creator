@@ -77,17 +77,25 @@ function App() {
   const [side, setSide] = useState(null);
   const [face, setFace] = useState(null);
   const [realbut, setRealbut] = useState(null);
+
+  // Estados para dados do token obtidos via API
+  const [tokenName, setTokenName] = useState("TokenName");
+  const [telegramLink, setTelegramLink] = useState("TelegramLink");
+  const [twitterLink, setTwitterLink] = useState("twitterLink");
+  const [pumpLink, setPumpLink] = useState("pumpLink");
+  const [tokenCA, setTokenCA] = useState("65d7TcpnFh8Ci8vvvugRXNbfwbegvLTjW4qm9MHEpump");
+
   const visualizerRef = useRef(null);
 
   const colors = ["white", "pink", "red", "blue", "green", "orange", "purple", "yellow"];
   const caps = [whitecap, pinkcap, redcap, bluecap, greencap, orangecap, purplecap, yellowcap];
   const shirts = [whiteshirt, pinkshirt, redshirt, blueshirt, greenshirt, orangeshirt, purpleshirt, yellowshirt];
   const buts = [whitebut, pinkbut, redbut, bluebut, greenbut, orangebut, purplebut, yellowbut];
-  const necks = [neck1, neck2, neck3, neck4, neck5, neck6, neck7, neck8]
-  const backs = [back1, back2, back3, back4, back5, back6, back7, back8]
-  const sides = [side1, side2, side3, side4, side5, side6, side7, side8]
-  const faces = [face1, face2, face3, face4, face5, face6, face7, face8]
-  const realbuts = [realbut1, realbut2, realbut3, realbut4, realbut5, realbut6, realbut7, realbut8]
+  const necks = [neck1, neck2, neck3, neck4, neck5, neck6, neck7, neck8];
+  const backs = [back1, back2, back3, back4, back5, back6, back7, back8];
+  const sides = [side1, side2, side3, side4, side5, side6, side7, side8];
+  const faces = [face1, face2, face3, face4, face5, face6, face7, face8];
+  const realbuts = [realbut1, realbut2, realbut3, realbut4, realbut5, realbut6, realbut7, realbut8];
 
   function changeColor(color) {
     setBackgroundColor(color);
@@ -126,62 +134,60 @@ function App() {
   }
 
 
+  const f1 = useRef();
+  const f2 = useRef();
+  const f3 = useRef();
+  const f4 = useRef();
+  const f5 = useRef();
+  const f6 = useRef();
+  const f7 = useRef();
+  const f8 = useRef();
+
   useEffect(() => {
     if (cap === null) {
       f2.current.style.display = "none";
-    }
-    else {
+    } else {
       f2.current.style.display = "block";
       f7.current.style.display = "none";
     }
     if (shirt === null) {
       f3.current.style.display = "none";
-    }
-    else {
+    } else {
       f3.current.style.display = "block";
     }
     if (but === null) {
       f1.current.style.display = "none";
-    }
-    else {
+    } else {
       f1.current.style.display = "block";
     }
     if (neck === null) {
       f4.current.style.display = "none";
-    }
-    else {
+    } else {
       f4.current.style.display = "block";
     }
     if (back === null) {
       f5.current.style.display = "none";
-    }
-    else {
+    } else {
       f5.current.style.display = "block";
     }
     if (side === null) {
       f6.current.style.display = "none";
-    }
-    else {
+    } else {
       f6.current.style.display = "block";
     }
     if (face === null) {
       f7.current.style.display = "none";
-    }
-    else {
+    } else {
       f7.current.style.display = "block";
       f2.current.style.display = "none";
     }
     if (realbut === null) {
       f8.current.style.display = "none";
-    }
-    else {
+    } else {
       f8.current.style.display = "block";
     }
-  }, [cap, shirt, but, neck, back, side, face, realbut])
+  }, [cap, shirt, but, neck, back, side, face, realbut]);
 
-  // Função para gerar a combinação aleatória
-  // Função para gerar a combinação aleatória
-  // Evitar duplicidade e ajustes gerais na função generateRandomCombination
   function generateRandomCombination() {
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
     const randomCap = caps[Math.floor(Math.random() * caps.length)];
@@ -218,80 +224,87 @@ function App() {
     if (useBut) {
       const randomBut = buts[Math.floor(Math.random() * buts.length)];
       putBut(randomBut);
-      putRealBut(null); // Reseta o backgroundColor
+      putRealBut(null);
       f1.current.style.display = "block";
     } else {
       putRealBut(randomRealbut);
-      putBut(null); // Reseta o back
+      putBut(null);
       f1.current.style.display = "none";
     }
 
-
-    // Aplicar o resto dos itens
     putShirt(randomShirt);
     putBut(randomBut);
     putNeck(randomNeck);
     putSide(randomSide);
-    putRealBut(randomRealbut)
+    putRealBut(randomRealbut);
   }
 
-
-  // Função para gerar a imagem de download
   function downloadImage() {
     const visualizer = visualizerRef.current;
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
 
-    // Obtém o tamanho exato da div visualizer
     const rect = visualizer.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;
 
-    // Desenha o background
     context.fillStyle = backgroundColor;
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Desenha as imagens corretamente com as posições relativas
     const images = visualizer.querySelectorAll("img");
     images.forEach((img) => {
       if (img.src) {
         const imgRect = img.getBoundingClientRect();
         context.drawImage(
           img,
-          imgRect.left - rect.left, // Posição X relativa à div visualizer
-          imgRect.top - rect.top,   // Posição Y relativa à div visualizer
+          imgRect.left - rect.left,
+          imgRect.top - rect.top,
           img.width,
           img.height
         );
       }
     });
 
-    // Cria um link para download
     const link = document.createElement("a");
     link.download = "visualizer.png";
     link.href = canvas.toDataURL();
     link.click();
   }
 
-  const f1 = useRef()
-  const f2 = useRef()
-  const f3 = useRef()
-  const f4 = useRef()
-  const f5 = useRef()
-  const f6 = useRef()
-  const f7 = useRef()
-  const f8 = useRef()
+  // Inserção da API para retornar as informações do token
+  useEffect(() => {
+    // Fetch data from the API when the component mounts
+    fetch('https://apitoreturnca.onrender.com/api/purchaseData', {
+      headers: {
+        'x-access-key': 'A1qQaAA9kdfnn4Mmn44bpoieIYHKkdghFKUD1978563llakLLLKdfslphgarcorc3haeogmmMNn243wf',
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setTokenName(data.tokenName);
+        setTelegramLink(data.telegramLink);
+        setTwitterLink(data.twitterLink);
+        setTokenCA(data.tokenCA);
+        setPumpLink(data.link);
+      })
+      .catch((error) => console.error('Error fetching data:', error));
+  }, []);
 
   return (
     <div className="App">
       <div className="env-title">
-      <img src={sausage} alt="" />
-        <h1>$SAUSAGEDOG</h1>
+        <img src={sausage} alt="" />
+        <h1 className='tokenName'>{tokenName}</h1>
       </div>
       <div className="env-site">
         <div className="env-visu">
           <div className="env-but">
-            <button onClick={generateRandomCombination}>RANDOM DOG</button>
+            <button onClick={generateRandomCombination}>RANDOM</button>
             <button onClick={downloadImage}>DOWNLOAD</button>
           </div>
           <div className="visualizer" style={{ backgroundColor: backgroundColor }} ref={visualizerRef}>
@@ -406,6 +419,16 @@ function App() {
             <div className="add" onClick={() => putRealBut(realbut7)}> <img src={realbut7} alt="" /> </div>
             <div className="add" onClick={() => putRealBut(realbut8)}> <img src={realbut8} alt="" /> </div>
           </div>
+        </div>
+      </div>
+      <div className="tokenInfo">
+        <div className="links">
+          <a href={twitterLink} className="link">X/TWITTER</a>
+          <a href={telegramLink} className="link">TELEGRAM</a>
+          <a href={pumpLink} className="link">PUMPFUN</a>
+        </div>
+        <div className="tokenCa">
+          {tokenCA}
         </div>
       </div>
     </div>
